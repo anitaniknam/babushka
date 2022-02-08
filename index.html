@@ -19,7 +19,7 @@
 
       section {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minimax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minimax(300px, 1fr));
       }
 
       article:nth-child(2n + 0) {
@@ -35,6 +35,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 10px;
+        grid-column: 2/3;
       }
 
       article {
@@ -97,11 +98,15 @@
         font-family: Arial, Helvetica, sans-serif;
       }
 
+      button:hover {
+        color: red;
+      }
+
       /* pop-up style */
 
       #modal {
         display: none;
-        width: 100vh;
+        width: 100vw;
         height: 100vh;
         position: fixed;
         left: 0;
@@ -112,7 +117,7 @@
 
       #modal article {
         max-width: 900px;
-        margin: 3rem auto;
+        margin: 2em auto;
         background-color: white;
       }
 
@@ -141,8 +146,9 @@
       <aside id="modal">
         <article>
           <img src="" alt="" />
-          <h3 class="" navn></h3>
+          <h3></h3>
           <p class="beskrivelse"></p>
+          <p class="pris"></p>
         </article>
       </aside>
       <section></section>
@@ -179,7 +185,7 @@
         hentData();
       }
 
-      function setfilter() {
+      function setFilter() {
         filter = this.dataset.kategori; // Sætter variblen til det der er valgt
         document.querySelector(".valgt").classList.remove("valgt");
         this.classList.add("valgt");
@@ -204,7 +210,7 @@
 
         container.textContent = ""; // Ryd container
 
-        main.innerHTML = "";
+        container.innerHTML = "";
         retter.forEach((ret) => {
           if ((filter = ret.kategori || filter == "alle")) {
             const klon = temp.cloneNode(true);
@@ -220,25 +226,24 @@
             klon
               .querySelector("article")
               .addEventListener("click", () => visDetaljer(ret));
-            main.appendChild(klon);
+            container.appendChild(klon);
           }
         });
       }
 
       function visDetaljer(ret) {
         console.log(ret);
-        modal.style.display = "block";
         modal.querySelector("h3").textContent = `${ret.navn}`;
         modal.querySelector(
-          "beskrivelse"
+          ".beskrivelse"
         ).textContent = `${ret.langbeskrivelse}`;
         modal.querySelector("img").src =
           "billeder/" + ret.billednavn + "-md.jpg";
         modal.querySelector(".pris").textContent = "Pris: " + ret.pris + ",-";
+        modal.style.display = "block";
       }
 
       modal.addEventListener("click", () => (modal.style.display = "none"));
-      hentData();
     </script>
   </body>
 </html>
